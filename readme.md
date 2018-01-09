@@ -1,4 +1,4 @@
-# Env CI [![GoDoc](https://godoc.org/github.com/go-carrot/env-ci?status.svg)](https://godoc.org/github.com/go-carrot/env-ci) [![Build Status](https://travis-ci.org/go-carrot/env-ci.svg?branch=master)](https://travis-ci.org/go-carrot/env-ci)
+# Env CI [![GoDoc](https://godoc.org/github.com/go-carrot/envci?status.svg)](https://godoc.org/github.com/go-carrot/envci) [![Build Status](https://travis-ci.org/go-carrot/envci.svg?branch=master)](https://travis-ci.org/go-carrot/envci)
 > A Go Port of [pvdlg/env-ci](//github.com/pvdlg/env-ci)
 
 ## License

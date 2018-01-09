@@ -1,7 +1,7 @@
 package envci
 
 import (
-	"github.com/go-carrot/env-ci/services"
+	"github.com/go-carrot/envci/services"
 	env "github.com/tj/go/env"
 )
 
