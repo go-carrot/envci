@@ -1,7 +1,6 @@
 package envci
 
 import (
-	"github.com/go-carrot/envci/services"
 	env "github.com/tj/go/env"
 )
 
@@ -13,7 +12,7 @@ func Detect() *EnvCI {
 		variables.IsCI = true
 	}
 
-	for service, e := range services.Services {
+	for service, e := range Services {
 		if env.GetDefault(e.Base, "") != "" {
 			variables.IsCI = true
 			variables.Service = service
@@ -48,7 +47,7 @@ func IsCI() bool {
 		return true
 	}
 
-	for _, e := range services.Services {
+	for _, e := range Services {
 		if env.GetDefault(e.Base, "") != "" {
 			return true
 		}
