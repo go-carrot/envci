@@ -18,8 +18,35 @@ type Environment struct {
 	Slug   string
 }
 
+// Services List
+var Services = map[string]*Environment{
+	"appveyor":  appveyor,
+	"bamboo":    bamboo,
+	"buildkite": buildKite,
+	"circleci":  circleCI,
+	"codeship":  codeship,
+	"drone":     drone,
+	"gitlab":    gitlab,
+	"jenkins":   jenkins,
+	"semaphore": semaphore,
+	"shippable": shippable,
+	"teamcity":  teamcity,
+	"travis":    travis,
+	"wercker":   wercker,
+}
+
+// pullRequestIsFalse returns "" if env equals "false"
+func pullRequestIsFalse(name string) string {
+	pr := env.GetDefault(name, "")
+	if pr == "false" {
+		return ""
+	}
+
+	return pr
+}
+
 // Appveyor Service - https://www.appveyor.com/docs/environment-variables/
-var Appveyor = &Environment{
+var appveyor = &Environment{
 	Base:   "APPVEYOR",
 	Build:  env.GetDefault("APPVEYOR_BUILD_NUMBER", ""),
 	Branch: env.GetDefault("APPVEYOR_REPO_BRANCH", ""),
@@ -31,7 +58,7 @@ var Appveyor = &Environment{
 }
 
 // Bamboo Service - https://confluence.atlassian.com/bamboo/bamboo-variables-289277087.html
-var Bamboo = &Environment{
+var bamboo = &Environment{
 	Base:   "bamboo_agentId",
 	Build:  env.GetDefault("bamboo_buildNumber", ""),
 	Branch: env.GetDefault("bamboo_planRepository_1_branchName", ""),
@@ -43,7 +70,7 @@ var Bamboo = &Environment{
 }
 
 // BuildKite Service - https://buildkite.com/docs/builds/environment-variables<Paste>
-var BuildKite = &Environment{
+var buildKite = &Environment{
 	Base:   "BUILDKITE",
 	Build:  env.GetDefault("BUILDKITE_BUILD_NUMBER", ""),
 	Branch: env.GetDefault("BUILDKITE_BRANCH", ""),
@@ -54,7 +81,7 @@ var BuildKite = &Environment{
 }
 
 // CircleCI Service - https://circleci.com/docs/1.0/environment-variables
-var CircleCI = &Environment{
+var circleCI = &Environment{
 	Base:   "CIRCLECI",
 	Build:  env.GetDefault("CIRCLE_BUILD_NUM", "") + "." + env.GetDefault("CIRCLE_NODE_INDEX", ""),
 	Branch: env.GetDefault("CIRCLE_BRANCH", ""),
@@ -73,7 +100,7 @@ var CircleCI = &Environment{
 }
 
 // Codeship Service - https://documentation.codeship.com/basic/builds-and-configuration/set-environment-variables
-var Codeship = &Environment{
+var codeship = &Environment{
 	// Base == "codeship"
 	Base:   "CI_NAME",
 	Build:  env.GetDefault("CI_BUILD_NUMBER", ""),
@@ -86,7 +113,7 @@ var Codeship = &Environment{
 }
 
 // Drone Service - http://readme.drone.io/0.5/usage/environment-reference
-var Drone = &Environment{
+var drone = &Environment{
 	Base:   "DRONE",
 	Build:  env.GetDefault("DRONE_BUILD_NUMBER", ""),
 	Branch: env.GetDefault("DRONE_BRANCH", ""),
@@ -98,7 +125,7 @@ var Drone = &Environment{
 }
 
 // Gitlab Service - https://docs.gitlab.com/ce/ci/variables/README.html
-var Gitlab = &Environment{
+var gitlab = &Environment{
 	Base:   "DRONE",
 	Build:  env.GetDefault("CI_JOB_NAME", ""),
 	Branch: env.GetDefault("CI_COMMIT_REF_NAME", ""),
@@ -120,7 +147,7 @@ var Gitlab = &Environment{
 }
 
 // Jenkins Service - https://wiki.jenkins.io/display/JENKINS/Building+a+software+project
-var Jenkins = &Environment{
+var jenkins = &Environment{
 	Base:   "JENKINS_URL",
 	Build:  env.GetDefault("BUILD_NUMBER", ""),
 	Branch: env.GetDefault("GIT_BRANCH", ""),
@@ -132,7 +159,7 @@ var Jenkins = &Environment{
 }
 
 // Semaphore Service - https://semaphoreci.com/docs/available-environment-variables.html
-var Semaphore = &Environment{
+var semaphore = &Environment{
 	Base:   "SEMAPHORE",
 	Build:  env.GetDefault("SEMAPHORE_BUILD_NUMBER", ""),
 	Branch: env.GetDefault("BRANCH_NAME", ""),
@@ -144,7 +171,7 @@ var Semaphore = &Environment{
 }
 
 // Shippable Service - http://docs.shippable.com/ci/env-vars/#stdEnv
-var Shippable = &Environment{
+var shippable = &Environment{
 	Base:  "SHIPPABLE",
 	Build: env.GetDefault("BUILD_NUMBER", ""),
 	Branch: func() string {
@@ -162,7 +189,7 @@ var Shippable = &Environment{
 }
 
 // Teamcity Service - https://confluence.jetbrains.com/display/TCD10/Predefined+Build+Parameters
-var Teamcity = &Environment{
+var teamcity = &Environment{
 	Base:   "TEAMCITY_VERSION",
 	Build:  env.GetDefault("BUILD_NUMBER", ""),
 	Branch: "", // TODO
@@ -174,7 +201,7 @@ var Teamcity = &Environment{
 }
 
 // Travis Service - https://docs.travis-ci.com/user/environment-variables
-var Travis = &Environment{
+var travis = &Environment{
 	Base:   "TRAVIS",
 	Build:  env.GetDefault("TRAVIS_BUILD_NUMBER", ""),
 	Branch: env.GetDefault("TRAVIS_BRANCH", ""),
@@ -186,7 +213,7 @@ var Travis = &Environment{
 }
 
 // Wercker Service - http://devcenter.wercker.com/docs/environment-variables/available-env-vars#hs_cos_wrapper_name
-var Wercker = &Environment{
+var wercker = &Environment{
 	Base:   "WERCKER_MAIN_PIPELINE_STARTED",
 	Build:  env.GetDefault("WERCKER_MAIN_PIPELINE_STARTED", ""),
 	Branch: env.GetDefault("WERCKER_GIT_BRANCH", ""),
@@ -195,31 +222,4 @@ var Wercker = &Environment{
 	PR:     "",
 	Slug:   env.GetDefault("WERCKER_GIT_OWNER", "") + "/" + env.GetDefault("WERCKER_GIT_REPOSITORY", ""),
 	Root:   env.GetDefault("WERCKER_ROOT", ""),
-}
-
-// pullRequestIsFalse returns "" if env equals "false"
-func pullRequestIsFalse(name string) string {
-	pr := env.GetDefault(name, "")
-	if pr == "false" {
-		return ""
-	}
-
-	return pr
-}
-
-// Services List
-var Services = map[string]*Environment{
-	"appveyor":  Appveyor,
-	"bamboo":    Bamboo,
-	"buildkite": BuildKite,
-	"circleci":  CircleCI,
-	"codeship":  Codeship,
-	"drone":     Drone,
-	"gitlab":    Gitlab,
-	"jenkins":   Jenkins,
-	"semaphore": Semaphore,
-	"shippable": Shippable,
-	"teamcity":  Teamcity,
-	"travis":    Travis,
-	"wercker":   Wercker,
 }
